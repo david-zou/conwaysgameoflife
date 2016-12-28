@@ -1,13 +1,16 @@
 // Game Mechanics file for Conway's Game of Life
 
 // Global Variables
-var time = 0;
-var speed = 0;
-var gridHeight = 20; // placeholder value
-var gridWidth = 20; // placeholder value
-var mainGrid = []; 
+const populatedCell = "<font size='5'>&#9632</font>";  // black square
+const unpopulatedCell = "<font size='5'>&#9633</font>";  // white square
+const table = document.getElementById("gameBoard");
+var time = 1000; // in milliseconds
+var speed = 1; // placeholder value
+var gridHeight = 20; // default value
+var gridWidth = 20; // default value
+var mainGrid = [];  // initialized as array
 
-// Grid cell object
+// Grid cell constructor
 function cell() {
     this.alive = false;
     this.coordX = 0;
@@ -16,17 +19,72 @@ function cell() {
     this.makeDead = function() { this.alive = false; };
 }
 
-// Creates the main grid
-var createGrid = function() {
-    for (column = 0; column < gridWidth; column++) {
+// Creates the main grid for the cell objects
+var createGrid = function(width, height) {
+    for (column = 0; column < width; column++) {
         mainGrid[column] = [];
-        for (row = 0; row < gridHeight; row++) {
+        for (row = 0; row < height; row++) {
             mainGrid[column][row] = new cell();
             mainGrid[column][row].coordX = column;
             mainGrid[column][row].coordY = row;
         }
     }
     return mainGrid;
+}
+
+// Prints an empty grid (no content in cells) with width and height passed as arguments
+var printGrid = function(width, height) {
+    var tableString = "";
+    for (row = 0; row < height; row++) {
+        tableString += "<tr>\n";
+        for (column = 0; column < width; column++) {
+            tableString += "<td></td>\n";
+        }
+        tableString += "</tr>\n";
+    }
+    table.innerHTML = tableString;  
+}
+
+// Click action for table cells
+var clickCell = function(row, column) {
+    insertCell(mainGrid, row, column);
+    updateGrid(mainGrid);
+}
+
+// Maps actions to each cell in the HTML table
+var mapActions = function() {
+    for (row = 0; row < table.rows.length; row++) {
+        console.log(table.rows[row].innerHTML);
+        for (column = 0; column < table.rows[row].cells.length; column++) {
+            table.rows[row].cells[column].onclick = ( function() {
+                console.log("addActions -  row: " + row + " column: " + column);
+            })();
+        }
+    } 
+}
+
+// Updates the HTML table based on the state of the cell in each position
+var updateGrid = function(grid) {
+    width = grid.length;
+    height = grid[0].length;
+    for (column = 0; column < width; column++) {
+        for (row = 0; row < height; row++) {
+            if (grid[column][row].alive === true) {
+                document.getElementById("gameBoard").rows[row].cells[column].innerHTML = populatedCell;
+            }
+            else {
+                document.getElementById("gameBoard").rows[row].cells[column].innerHTML = unpopulatedCell;
+            }
+        }
+    }
+}
+
+// Inserts a populated cell onto the grid using coordinates passed as arguments
+var insertCell = function(grid, coordX, coordY) {
+    var position = grid[coordX][coordY];
+    position.makePopulated();
+    position.coordX = coordX;
+    position.coordY = coordY;
 }
 
 // Clones a cell object

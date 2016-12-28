@@ -41,3 +41,10 @@ testCheckAliveLowerRight();
 
 // Tests Change Cell Function
 testChangeCells();
+
+// Tests Insert Cell Function
+testInsertCell(5,6);
+testInsertCell(7,8);
+
+// Test Print Grid (Work in progress)
+// testPrintGrid();

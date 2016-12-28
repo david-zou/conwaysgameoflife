@@ -2,24 +2,24 @@
 
 // Tests Grid Creation Function
 var testCreateGrid = function() {
-    gridWidth = 10;
-    gridHeight = 10;
-    var grid = createGrid();
-    if (grid.length !== gridWidth) {
+    var width = 10;
+    var height = 10;
+    var grid = createGrid(width,height);
+    if (grid.length !== width) {
         document.write("<li>testCreateGrid: Width test FAILED - grid.length: " + grid.length + " " + "gridWidth: " + gridWidth + "<br>");
     }
     else {
         document.write("<li>testCreateGrid: Width test PASSED - grid.length: " + grid.length + " " + "gridWidth: " + gridWidth + "<br>");
     }
-    if (grid[0].length !== gridHeight) {
+    if (grid[0].length !== height) {
         document.write("<li>testCreateGrid: Height test FAILED - grid.length: " + grid[0].length + " " + "gridHeight: " + gridHeight + "<br>");
     }
     else {
         document.write("<li>testCreateGrid: Height test PASSED - grid.length: " + grid[0].length + " " + "gridHeight: " + gridHeight + "<br>");
     }
     var failCount = 0;
-    for (column = 0; column < gridWidth; column++) {
-        for (row = 0; row < gridHeight; row++) {
+    for (column = 0; column < width; column++) {
+        for (row = 0; row < height; row++) {
             if (grid[column][row].alive === true) {
                 document.write("<li>testCreateGrid: Cell State Test FAILED at column " + column + " row " + row + " - Cell State = " + grid[column][row].alive + "<br>");
                 failCount++;
@@ -336,8 +336,6 @@ var testCheckAliveLowerRight = function() {
 //  three times to represent three consecutive steps and verifies that each step yields the correct cell 
 //  growth/death behavior.
 var testChangeCells = function() {
-    gridWidth = 3;
-    gridHeight = 3;
     var testColumn1 = 1;
     var testRow1 = 1;
     var testColumn2 = 0;
@@ -346,7 +344,7 @@ var testChangeCells = function() {
     var testRow3 = 0;
     var testColumn4 = 2;
     var testRow4 = 0;
-    var initGrid = createGrid();
+    var initGrid = createGrid(3,3);
     initGrid[testColumn1][testRow1].alive = true;
     initGrid[testColumn2][testRow2].alive = true;
     initGrid[testColumn3][testRow3].alive = true;
@@ -441,4 +439,28 @@ var testChangeCells = function() {
                         + "[2][1] = " + resultGrid[2][1].alive + "<br>"
                         + "[2][2] = " + resultGrid[2][2].alive + "<br>");
     }    
+}
+
+// Tests Cell Insertion Function
+var testInsertCell = function(testCoordX, testCoordY) {
+    var width = 20;
+    var height = 20;
+    var testGrid = createGrid(width,height);
+    insertCell(testGrid,testCoordX,testCoordY);
+    if (testGrid[testCoordX][testCoordY].alive === false) {
+        document.write("<li>testInsertCell: Test FAILED - [" + testCoordX + "][" + testCoordY + "].alive === " + testGrid[testCoordX][testCoordY].alive + "<br>");
+    }
+    else {
+        document.write("<li>testInsertCell: Test PASSED - [" + testCoordX + "][" + testCoordY + "].alive === " + testGrid[testCoordX][testCoordY].alive + "<br>");
+    }
+}
+
+// WORK IN PROGRESS, NOT WORKING AT THE MOMENT
+var testPrintGrid = function() {
+    gridWidth = 20;
+    gridHeight = 20;
+    mainGrid = createGrid(gridWidth,gridHeight);
+    printGrid(gridWidth,gridHeight);
+    updateGrid(mainGrid);
+    mapActions();
 }
